@@ -1,5 +1,6 @@
 package io.indrian.celenganbersama.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity()
+@Entity
 @Table(name = "join_savings")
 @Getter
 @Setter
@@ -27,6 +28,6 @@ public class JoinSaving extends AuditModel {
     private Date limitDate;
 
     @OneToOne(mappedBy = "joinSaving", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = { "join_saving", "users", "create_date", "modified_date"})
+    @JsonIgnore
     private Saving saving;
 }
