@@ -27,6 +27,6 @@ public class JoinSaving extends AuditModel {
     private Date limitDate;
 
     @OneToOne(mappedBy = "joinSaving", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("join_saving")
+    @JsonIgnoreProperties(value = { "join_saving", "users", "create_date", "modified_date"})
     private Saving saving;
 }

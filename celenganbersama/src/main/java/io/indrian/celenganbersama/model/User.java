@@ -42,6 +42,6 @@ public class User extends AuditModel {
     private String avatarUrl;
 
     @ManyToMany(mappedBy = "users")
-    @JsonIgnoreProperties(value = { "users", "create_date", "modified_date" })
+    @JsonIgnoreProperties(value = { "users", "create_date", "modified_date", "join_saving" })
     private Set<Saving> savings;
 }
