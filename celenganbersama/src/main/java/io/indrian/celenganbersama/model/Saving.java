@@ -1,18 +1,22 @@
 package io.indrian.celenganbersama.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "savings")
-@Getter
 @Setter
+@Getter
 public class Saving extends AuditModel {
 
     @Id
@@ -33,12 +37,30 @@ public class Saving extends AuditModel {
             joinColumns = @JoinColumn(name = "saving_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    @JsonIgnoreProperties(value = { "savings", "create_date", "modified_date" })
+    @JsonIgnore
     private Set<User> users;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "join_id", referencedColumnName = "id")
-    @JsonProperty("join_saving")
     @JsonIgnoreProperties(value = { "saving", "id", "create_date", "modified_date" })
+    @JsonProperty("join_saving")
     private JoinSaving joinSaving;
+
+    @OneToMany(mappedBy = "saving")
+    @JsonIgnore
+    private List<Input> inputs = new ArrayList<>();
+
+    @JsonProperty("total_saving")
+    public Double getSaving() {
+
+        double totalSaving = 0.0;
+        if (!inputs.isEmpty()) {
+
+            totalSaving = inputs.stream()
+                    .mapToDouble(Input::getAmount)
+                    .sum();
+        }
+
+        return totalSaving;
+    }
 }

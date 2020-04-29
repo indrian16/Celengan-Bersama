@@ -2,12 +2,15 @@ package io.indrian.celenganbersama.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
+import io.indrian.celenganbersama.assembler.InputModelAssembler;
 import io.indrian.celenganbersama.assembler.JoinSavingModelAssembler;
 import io.indrian.celenganbersama.assembler.SavingModelAssembler;
 import io.indrian.celenganbersama.exception.ResourceNotFound;
+import io.indrian.celenganbersama.model.Input;
 import io.indrian.celenganbersama.model.JoinSaving;
 import io.indrian.celenganbersama.model.Saving;
 import io.indrian.celenganbersama.model.User;
+import io.indrian.celenganbersama.repositories.InputRepository;
 import io.indrian.celenganbersama.repositories.JoinSavingRepository;
 import io.indrian.celenganbersama.repositories.SavingRepository;
 import io.indrian.celenganbersama.repositories.UserRepository;
@@ -43,10 +46,16 @@ public class SavingController {
     private JoinSavingRepository joinSavingRepository;
 
     @Autowired
+    private InputRepository inputRepository;
+
+    @Autowired
     private SavingModelAssembler savingModelAssembler;
 
     @Autowired
     private JoinSavingModelAssembler joinSavingModelAssembler;
+
+    @Autowired
+    private InputModelAssembler inputModelAssembler;
 
     /**
      * Method Saving
@@ -90,10 +99,10 @@ public class SavingController {
 
     /**
      * Method Join Saving
-     * /id/join
+     * /{savingId}/joins
      * */
 
-    @GetMapping("/{savingId}/join")
+    @GetMapping("/{savingId}/joins")
     public EntityModel<JoinSaving> getJoinSaving(
             @PathVariable("savingId") Long savingId
     ) {
@@ -101,32 +110,6 @@ public class SavingController {
         // Find Saving
         Saving saving = findSaving(savingId);
         return joinSavingModelAssembler.toModel(saving.getJoinSaving());
-    }
-
-    @PostMapping("/{savingId}/join")
-    public ResponseEntity<EntityModel<JoinSaving>> create(
-            @PathVariable("savingId") Long savingId
-    ) {
-
-        // Create Join
-        JoinSaving joinSaving = new JoinSaving();
-        String generatedString = RandomStringUtils.randomAlphanumeric(16);
-        Date limitDAte = DateUtils.getFifteenDay();
-        joinSaving.setCode(generatedString);
-        joinSaving.setLimitDate(limitDAte);
-
-        // Find Saving
-        Saving saving = findSaving(savingId);
-
-        // Join to Saving
-        saving.setJoinSaving(joinSaving);
-        joinSaving.setSaving(saving);
-
-        // Save
-        JoinSaving newJoinSaving = joinSavingRepository.save(joinSaving);
-        return ResponseEntity
-                .created(linkTo(methodOn(this.getClass()).one(newJoinSaving.getId())).toUri())
-                .body(joinSavingModelAssembler.toModel(newJoinSaving));
     }
 
     private Saving findSaving(Long id) {

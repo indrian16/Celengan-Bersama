@@ -1,8 +1,8 @@
 package io.indrian.celenganbersama.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +42,16 @@ public class User extends AuditModel {
     private String avatarUrl;
 
     @ManyToMany(mappedBy = "users")
-    @JsonIgnoreProperties(value = { "users", "create_date", "modified_date", "join_saving" })
+    @JsonIgnore
     private Set<Saving> savings;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Input> inputs;
+
+    @JsonProperty("display_name")
+    public String getDisplayName() {
+
+        return firstName + " " + lastName;
+    }
 }
