@@ -2,20 +2,17 @@ package io.indrian.celenganbersama.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
-import io.indrian.celenganbersama.assembler.InputModelAssembler;
+import io.indrian.celenganbersama.assembler.IncomeModelAssembler;
 import io.indrian.celenganbersama.assembler.JoinSavingModelAssembler;
 import io.indrian.celenganbersama.assembler.SavingModelAssembler;
 import io.indrian.celenganbersama.exception.ResourceNotFound;
-import io.indrian.celenganbersama.model.Input;
 import io.indrian.celenganbersama.model.JoinSaving;
 import io.indrian.celenganbersama.model.Saving;
 import io.indrian.celenganbersama.model.User;
-import io.indrian.celenganbersama.repositories.InputRepository;
+import io.indrian.celenganbersama.repositories.IncomeRepository;
 import io.indrian.celenganbersama.repositories.JoinSavingRepository;
 import io.indrian.celenganbersama.repositories.SavingRepository;
 import io.indrian.celenganbersama.repositories.UserRepository;
-import io.indrian.celenganbersama.utils.DateUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,7 +42,7 @@ public class SavingController {
     private JoinSavingRepository joinSavingRepository;
 
     @Autowired
-    private InputRepository inputRepository;
+    private IncomeRepository incomeRepository;
 
     @Autowired
     private SavingModelAssembler savingModelAssembler;
@@ -55,7 +51,7 @@ public class SavingController {
     private JoinSavingModelAssembler joinSavingModelAssembler;
 
     @Autowired
-    private InputModelAssembler inputModelAssembler;
+    private IncomeModelAssembler incomeModelAssembler;
 
     /**
      * Method Saving

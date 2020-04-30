@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "inputs")
 @Getter
 @Setter
-public class Input extends AuditModel {
+public class Income extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

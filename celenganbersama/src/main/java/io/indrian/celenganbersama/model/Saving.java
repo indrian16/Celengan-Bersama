@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -48,19 +47,18 @@ public class Saving extends AuditModel {
 
     @OneToMany(mappedBy = "saving")
     @JsonIgnore
-    private List<Input> inputs = new ArrayList<>();
+    private List<Income> incomes = new ArrayList<>();
 
-    @JsonProperty("total_saving")
-    public Double getSaving() {
+    @JsonProperty("balance")
+    public Double getBalance() {
 
         double totalSaving = 0.0;
-        if (!inputs.isEmpty()) {
+        if (!incomes.isEmpty()) {
 
-            totalSaving = inputs.stream()
-                    .mapToDouble(Input::getAmount)
+            totalSaving = incomes.stream()
+                    .mapToDouble(Income::getAmount)
                     .sum();
         }
-
         return totalSaving;
     }
 }

@@ -1,9 +1,9 @@
 package io.indrian.celenganbersama.controller;
 
-import io.indrian.celenganbersama.assembler.InputModelAssembler;
+import io.indrian.celenganbersama.assembler.IncomeModelAssembler;
 import io.indrian.celenganbersama.exception.ResourceNotFound;
-import io.indrian.celenganbersama.model.Input;
-import io.indrian.celenganbersama.repositories.InputRepository;
+import io.indrian.celenganbersama.model.Income;
+import io.indrian.celenganbersama.repositories.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -17,21 +17,21 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/v1/inputs")
-public class InputController {
+@RequestMapping("/api/v1/incomes")
+public class IncomeController {
 
     @Autowired
-    private InputRepository inputRepository;
+    private IncomeRepository incomeRepository;
 
     @Autowired
-    private InputModelAssembler inputModelAssembler;
+    private IncomeModelAssembler incomeModelAssembler;
 
     @GetMapping
-    public CollectionModel<EntityModel<Input>> all() {
+    public CollectionModel<EntityModel<Income>> all() {
 
-        List<EntityModel<Input>> inputs = inputRepository.findAll()
+        List<EntityModel<Income>> inputs = incomeRepository.findAll()
                 .stream()
-                .map(inputModelAssembler::toModel)
+                .map(incomeModelAssembler::toModel)
                 .collect(Collectors.toList());
         return new CollectionModel<>(
                 inputs,
@@ -40,19 +40,19 @@ public class InputController {
     }
 
     @GetMapping("/{inputId}")
-    public EntityModel<Input> one(@PathVariable("inputId") Long inputId) {
+    public EntityModel<Income> one(@PathVariable("inputId") Long inputId) {
 
-        return inputRepository.findById(inputId)
-                .map(input -> inputModelAssembler.toModel(input))
+        return incomeRepository.findById(inputId)
+                .map(input -> incomeModelAssembler.toModel(input))
                 .orElseThrow(() -> new ResourceNotFound(inputId));
     }
 
     @PostMapping
-    public ResponseEntity<EntityModel<Input>> saveMoney(@RequestBody Input input) {
+    public ResponseEntity<EntityModel<Income>> saveMoney(@RequestBody Income income) {
 
-        Input newInput = inputRepository.save(input);
+        Income newIncome = incomeRepository.save(income);
         return ResponseEntity
-                .created(linkTo(methodOn(this.getClass()).one(newInput.getId())).toUri())
-                .body(inputModelAssembler.toModel(newInput));
+                .created(linkTo(methodOn(this.getClass()).one(newIncome.getId())).toUri())
+                .body(incomeModelAssembler.toModel(newIncome));
     }
 }

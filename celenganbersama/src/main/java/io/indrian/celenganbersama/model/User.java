@@ -1,7 +1,6 @@
 package io.indrian.celenganbersama.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +46,7 @@ public class User extends AuditModel {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private Set<Input> inputs;
+    private Set<Income> incomes;
 
     @JsonProperty("display_name")
     public String getDisplayName() {
