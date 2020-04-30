@@ -49,16 +49,23 @@ public class Saving extends AuditModel {
     @JsonIgnore
     private List<Income> incomes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "saving")
+    @JsonIgnore
+    private List<Expense> expenses = new ArrayList<>();
+
     @JsonProperty("balance")
     public Double getBalance() {
 
-        double totalSaving = 0.0;
+        double balance = 0.0;
         if (!incomes.isEmpty()) {
 
-            totalSaving = incomes.stream()
+            balance += incomes.stream()
                     .mapToDouble(Income::getAmount)
                     .sum();
+            balance -= expenses.stream()
+                    .mapToDouble(Expense::getAmount)
+                    .sum();
         }
-        return totalSaving;
+        return balance;
     }
 }

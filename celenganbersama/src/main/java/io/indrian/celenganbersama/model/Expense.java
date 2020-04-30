@@ -9,10 +9,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "incomes")
+@Table(name = "expenses")
 @Getter
 @Setter
-public class Income extends AuditModel {
+public class Expense extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

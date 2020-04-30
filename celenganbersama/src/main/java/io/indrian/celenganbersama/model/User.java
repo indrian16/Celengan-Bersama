@@ -48,6 +48,10 @@ public class User extends AuditModel {
     @JsonIgnore
     private Set<Income> incomes;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Expense> expenses;
+
     @JsonProperty("display_name")
     public String getDisplayName() {
 
