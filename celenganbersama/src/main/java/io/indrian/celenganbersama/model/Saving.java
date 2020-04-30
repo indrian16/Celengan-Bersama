@@ -3,6 +3,7 @@ package io.indrian.celenganbersama.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.indrian.celenganbersama.utils.RupiahCurrencyUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -56,16 +57,24 @@ public class Saving extends AuditModel {
     @JsonProperty("balance")
     public Double getBalance() {
 
-        double balance = 0.0;
-        if (!incomes.isEmpty()) {
+        return sumBalance();
+    }
 
-            balance += incomes.stream()
-                    .mapToDouble(Income::getAmount)
-                    .sum();
-            balance -= expenses.stream()
-                    .mapToDouble(Expense::getAmount)
-                    .sum();
-        }
+    @JsonProperty("display_balance")
+    public String showDisplayBalance() {
+
+        return RupiahCurrencyUtils.toRupiah(sumBalance());
+    }
+
+    private Double sumBalance() {
+        double balance = 0.0;
+        if (!incomes.isEmpty()) balance += incomes.stream()
+                .mapToDouble(Income::getAmount)
+                .sum();
+        if (!expenses.isEmpty()) balance -= expenses.stream()
+                .mapToDouble(Expense::getAmount)
+                .sum();
+
         return balance;
     }
 }

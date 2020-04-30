@@ -1,9 +1,14 @@
 package io.indrian.celenganbersama.controller;
 
 import io.indrian.celenganbersama.assembler.IncomeModelAssembler;
+import io.indrian.celenganbersama.custombody.InputBody;
 import io.indrian.celenganbersama.exception.ResourceNotFound;
 import io.indrian.celenganbersama.model.Income;
+import io.indrian.celenganbersama.model.Saving;
+import io.indrian.celenganbersama.model.User;
 import io.indrian.celenganbersama.repositories.IncomeRepository;
+import io.indrian.celenganbersama.repositories.SavingRepository;
+import io.indrian.celenganbersama.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -22,6 +27,12 @@ public class IncomeController {
 
     @Autowired
     private IncomeRepository incomeRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SavingRepository savingRepository;
 
     @Autowired
     private IncomeModelAssembler incomeModelAssembler;
@@ -48,7 +59,19 @@ public class IncomeController {
     }
 
     @PostMapping
-    public ResponseEntity<EntityModel<Income>> saveMoney(@RequestBody Income income) {
+    public ResponseEntity<EntityModel<Income>> saveMoney(@RequestBody InputBody inputBody) {
+        Income income = new Income();
+        income.setAmount(inputBody.getAmount());
+        income.setNote(inputBody.getNote());
+
+        // Find User and Saving
+        User user = userRepository.findById(inputBody.getUserId())
+                .orElseThrow(() -> new ResourceNotFound(inputBody.getUserId()));
+        Saving saving = savingRepository.findById(inputBody.getSavingId())
+                .orElseThrow(() ->  new ResourceNotFound(inputBody.getSavingId()));
+        // Joining
+        income.setUser(user);
+        income.setSaving(saving);
 
         Income newIncome = incomeRepository.save(income);
         return ResponseEntity
