@@ -22,7 +22,7 @@ public class Expense extends AuditModel {
     private Double amount;
 
     @Lob
-    private String description;
+    private String note;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
