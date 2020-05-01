@@ -59,7 +59,7 @@ public class IncomeController {
     }
 
     @PostMapping
-    public ResponseEntity<EntityModel<Income>> saveMoney(@RequestBody InputBody inputBody) {
+    public ResponseEntity<EntityModel<Income>> income(@RequestBody InputBody inputBody) {
         Income income = new Income();
         income.setAmount(inputBody.getAmount());
         income.setNote(inputBody.getNote());
