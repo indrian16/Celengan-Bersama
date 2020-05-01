@@ -84,8 +84,8 @@ public class SavingController {
         User userOwner = userRepository.findById(saving.getOwnerId())
                 .orElseThrow(() -> new ResourceNotFound(saving.getOwnerId()));
 
-        userOwner.setSavings(Set.of(saving));
-        saving.setUsers(Set.of(userOwner));
+        userOwner.getSavings().add(saving);
+        saving.getUsers().add(userOwner);
 
         Saving newSaving = savingRepository.save(saving);
         return ResponseEntity

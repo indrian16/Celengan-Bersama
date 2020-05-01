@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -42,15 +43,15 @@ public class User extends AuditModel {
 
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
-    private Set<Saving> savings;
+    private Set<Saving> savings = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private Set<Income> incomes;
+    private Set<Income> incomes = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private Set<Expense> expenses;
+    private Set<Expense> expenses = new HashSet<>();
 
     @JsonProperty("display_name")
     public String getDisplayName() {

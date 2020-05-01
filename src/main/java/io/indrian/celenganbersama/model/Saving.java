@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class Saving extends AuditModel {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
     @JsonIgnore
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "join_id", referencedColumnName = "id")
