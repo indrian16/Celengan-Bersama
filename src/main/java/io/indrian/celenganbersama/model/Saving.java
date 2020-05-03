@@ -30,6 +30,8 @@ public class Saving extends AuditModel {
     private Long ownerId;
 
     private String name;
+
+    @Column(columnDefinition="TEXT")
     private String hope;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

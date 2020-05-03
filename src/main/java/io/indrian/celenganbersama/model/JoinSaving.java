@@ -19,7 +19,7 @@ public class JoinSaving extends AuditModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
+    @Column(columnDefinition="TEXT")
     private String code;
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -22,7 +22,7 @@ public class Income extends AuditModel {
     @NotNull
     private Double amount;
 
-    @Lob
+    @Column(columnDefinition="TEXT")
     private String note;
 
     @ManyToOne
